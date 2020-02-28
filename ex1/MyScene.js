@@ -77,33 +77,22 @@ class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
-        // if(this.displayTriangle){
-        //     this.triangle.display();
-        // }
-        // if(this.displayTriangleSmall){
-        //     this.triangleSmall.display();
-        // }
-        // if(this.displayTriangleBig){
-        //     this.triangleBig.display();
-        // }
         
-        // if(this.displayParallelogram){
-        //     this.parallelogram.display();
-        // }
-        this.pushMatrix();
-        this.translate(-1, -2, 0);
-        this.rotate(Math.PI / 4, 0, 0, 1);
-        if(this.displayDiamond){ this.diamond.display(); }
-        this.popMatrix();
-
-        this.pushMatrix();
-        this.translate(0.5, -2, 0);
-        this.rotate(3 * Math.PI / 4, 0, 0, 1);
-        if(this.displayTriangleSmall){ this.triangleSmall.display(); }
-        this.popMatrix();
-
-        
-
+        if(this.displayTriangle){
+            this.triangle.display();
+        }
+        if(this.displayTriangleSmall){
+            this.triangleSmall.display();
+        }
+        if(this.displayTriangleBig){
+            this.triangleBig.display();
+        }
+        if(this.displayDiamond){
+            this.diamond.display();
+        }
+        if(this.displayParallelogram){
+            this.parallelogram.display();
+        }
         // ---- END Primitive drawing section
     }
 }
