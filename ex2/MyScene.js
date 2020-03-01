@@ -79,16 +79,26 @@ class MyScene extends CGFscene {
 
 
         this.pushMatrix();
-        this.translate(-1, -2, 0);
-        this.rotate(Math.PI / 4, 0, 0, 1);
+        var translate = [1.0, 0.0, 0.0, 0.0,
+                         0.0, 1.0, 0.0, 0.0,
+                         0.0, 0.0, 1.0, 0.0,
+                         0.5, 0.5, 0.0, 1.0];
+
+        var rotate =    [Math.cos(Math.PI/4), Math.sin(Math.PI/4), 0.0, 0.0,
+                        -Math.sin(Math.PI/4), Math.cos(Math.PI/4), 0.0, 0.0,
+                         0.0, 0.0, 1.0, 0.0,
+                         0.0, 0.0, 0.0, 1.0];  
+               
+        this.multMatrix(translate);
+        this.multMatrix(rotate);      
         if(this.displayDiamond){ this.diamond.display(); }
         this.popMatrix();
 
-        this.pushMatrix();
-        this.translate(0.5, -2, 0);
-        this.rotate(3 * Math.PI / 4, 0, 0, 1);
-        if(this.displayTriangleSmall){ this.triangleSmall.display(); }
-        this.popMatrix();
+        // this.pushMatrix();
+        // this.translate(0.5, -2, 0);
+        // this.rotate(3 * Math.PI / 4, 0, 0, 1);
+        // if(this.displayTriangleSmall){ this.triangleSmall.display(); }
+        // this.popMatrix();
 
         // ---- END Primitive drawing section
     }
