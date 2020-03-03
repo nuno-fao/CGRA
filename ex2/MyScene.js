@@ -138,8 +138,6 @@ class MyScene extends CGFscene {
             this.triangleBig.display();
         }
         this.popMatrix();
-        
-        
 
         // ---- END Primitive drawing section
     }
