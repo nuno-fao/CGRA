@@ -23,11 +23,13 @@ class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.tangram = new MyTangram(this);
         this.cube = new MyUnitCube(this);
+        this.quadCube = new MyQuad(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.displayTangram = true;
         this.displayCube = true;
+        this.displayQuad = false;
         this.scaleFactor = 1;
     }
     initLights() {
@@ -76,6 +78,50 @@ class MyScene extends CGFscene {
         this.multMatrix(sca);
 
         // ---- BEGIN Primitive drawing section
+        this.pushMatrix();
+        this.translate(0,1,0);
+        if(this.displayQuad){
+            this.quadCube.display();
+        }
+        this.popMatrix();
+
+        this.pushMatrix();
+        if(this.displayQuad){
+            this.quadCube.display();
+        }
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(0,0.5,-0.5);
+        this.rotate(-Math.PI/2,1,0,0);
+        if(this.displayQuad){
+            this.quadCube.display();
+        }
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(0,0.5,0.5);
+        this.rotate(-Math.PI/2,1,0,0);
+        if(this.displayQuad){
+            this.quadCube.display();
+        }
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(-0.5,0.5,0);
+        this.rotate(-Math.PI/2,0,0,1);
+        if(this.displayQuad){
+            this.quadCube.display();
+        }
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(0.5,0.5,0);
+        this.rotate(-Math.PI/2,0,0,1);
+        if(this.displayQuad){
+            this.quadCube.display();
+        }
+        this.popMatrix();
         
         this.translate(2, 0, 3*Math.sqrt(2)+2);
         this.rotate(-Math.PI / 2, 1, 0, 0);
@@ -95,6 +141,8 @@ class MyScene extends CGFscene {
             this.tangram.display();
         }
         this.popMatrix();
+
+
 
         
 
