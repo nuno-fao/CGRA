@@ -123,11 +123,11 @@ class MyScene extends CGFscene {
         }
         this.popMatrix();
         
-        this.translate(2, 0, 3*Math.sqrt(2)+2);
+        this.translate(3, 0, 3*Math.sqrt(2)+1.583);
         this.rotate(-Math.PI / 2, 1, 0, 0);
 
         this.pushMatrix();
-        this.scale(4,3*Math.sqrt(2)+2,1);
+        this.scale(6,3*Math.sqrt(2)+1.583,1);
         this.translate(0,0.5,-0.501);
         this.setColor(1.0, 1.0, 1.0, 1.0);
         if (this.displayCube)
@@ -136,7 +136,7 @@ class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(0,2*Math.sqrt(2),0);
+        this.translate(0,2,0);
         if(this.displayTangram){
             this.tangram.display();
         }
