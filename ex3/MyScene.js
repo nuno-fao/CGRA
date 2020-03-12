@@ -25,6 +25,8 @@ class MyScene extends CGFscene {
         this.plane = new MyPlane(this, 5);
         this.cone = new MyCone(this, 3, 1);
         this.pyramid = new MyPyramid(this, 3, 1);
+        this.tangram = new MyTangram(this);
+        this.unitCube = new MyUnitCube(this);
         
         this.objects = [this.plane, this.pyramid, this.cone];
 
@@ -36,6 +38,8 @@ class MyScene extends CGFscene {
         this.selectedMaterial = 0;
         this.displayAxis = true;
         this.displayNormals = false;
+        this.displayCube = false;
+        this.displayTangram = false;
         this.objectComplexity = 0.5;
         this.scaleFactor = 2.0;
         this.globalAmbient = 0.3;
@@ -165,6 +169,12 @@ class MyScene extends CGFscene {
         this.materials[this.selectedMaterial].apply();
 
         this.pushMatrix();
+        if(this.displayCube){
+            this.unitCube.display();
+        }
+        if(this.displayTangram){
+            this.tangram.display();
+        }
         this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
         
         if (this.displayNormals)
