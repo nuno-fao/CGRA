@@ -28,18 +28,16 @@ class MyScene extends CGFscene {
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
         
-        this.objects = [this.plane, this.pyramid, this.cone];
+        this.objects = [this.plane, this.pyramid, this.cone, this.unitCube, this.tangram];
 
         // Labels and ID's for object selection on MyInterface
-        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2};
+        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2, 'Unit Cube': 3, 'Tangram': 4};
 
         //Other variables connected to MyInterface
         this.selectedObject = 0;
         this.selectedMaterial = 0;
         this.displayAxis = true;
         this.displayNormals = false;
-        this.displayCube = false;
-        this.displayTangram = false;
         this.objectComplexity = 0.5;
         this.scaleFactor = 2.0;
         this.globalAmbient = 0.3;
@@ -126,8 +124,15 @@ class MyScene extends CGFscene {
         this.material3.setSpecular(1, 0, 0, 1.0);
         this.material3.setShininess(10.0);
 
+        // Wood Material
+        this.material4 = new CGFappearance(this);
+        this.material4.setAmbient(0.1, 0.1, 0.1, 1.0);
+        this.material4.setDiffuse(133.0/255.0, 94.0/255.0, 66.0/255.0, 1.0);
+        this.material4.setSpecular(0.0, 0.0, 0.0, 1.0);
+        this.material4.setShininess(10.0);
+
         // Custom material (can be changed in the interface)
-        // initially midrange values on ambient, diffuse and specular, on R, G and B respectively
+        // initially midrange values on ambient, diffuse and spzecular, on R, G and B respectively
 
         this.customMaterialValues = {
             'Ambient': '#0000ff',
@@ -139,10 +144,10 @@ class MyScene extends CGFscene {
 
         this.updateCustomMaterial();
 
-        this.materials = [this.material1, this.material2, this.material3, this.customMaterial];
+        this.materials = [this.material1, this.material2, this.material3, this.material4, this.customMaterial];
 
         // Labels and ID's for object selection on MyInterface
-        this.materialIDs = {'Red Ambient': 0, 'Red Diffuse': 1, 'Red Specular': 2, 'Custom': 3 };
+        this.materialIDs = {'Red Ambient': 0, 'Red Diffuse': 1, 'Red Specular': 2, 'Wood': 3, 'Custom': 4 };
     }
     display() {
         // ---- BEGIN Background, camera and axis setup
@@ -169,12 +174,6 @@ class MyScene extends CGFscene {
         this.materials[this.selectedMaterial].apply();
 
         this.pushMatrix();
-        if(this.displayCube){
-            this.unitCube.display();
-        }
-        if(this.displayTangram){
-            this.tangram.display();
-        }
         this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
         
         if (this.displayNormals)

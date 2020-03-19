@@ -17,7 +17,25 @@ class MyUnitCube extends CGFobject {
 			-0.5, -0.5, -0.5,   //4 bottom back left
 			-0.5, -0.5, 0.5,    //5 bottom front left
 			0.5, -0.5, 0.5,     //6 bottom front right
-			0.5, -0.5, -0.5     //7 bottom back right
+			0.5, -0.5, -0.5,     //7 bottom back right
+
+			-0.5, 0.5, -0.5,    //8 top back left
+			-0.5, 0.5, 0.5,     //9 top front left
+			0.5, 0.5, 0.5,      //10 top front right
+			0.5, 0.5, -0.5,     //11 top back right
+			-0.5, -0.5, -0.5,   //12 bottom back left
+			-0.5, -0.5, 0.5,    //13 bottom front left
+			0.5, -0.5, 0.5,     //14 bottom front right
+			0.5, -0.5, -0.5,     //15 bottom back right
+
+			-0.5, 0.5, -0.5,    //16 top back left
+			-0.5, 0.5, 0.5,     //17 top front left
+			0.5, 0.5, 0.5,      //18 top front right
+			0.5, 0.5, -0.5,     //19 top back right
+			-0.5, -0.5, -0.5,   //20 bottom back left
+			-0.5, -0.5, 0.5,    //21 bottom front left
+			0.5, -0.5, 0.5,     //22 bottom front right
+			0.5, -0.5, -0.5,     //23 bottom back right
 		];
 
 		//Counter-clockwise reference of vertices
@@ -41,10 +59,41 @@ class MyUnitCube extends CGFobject {
 			4, 5, 0
 		];
 
+		this.normals = [
+			0,1,0,
+			0,1,0,
+			0,1,0,
+			0,1,0,
+			0,-1,0,
+			0,-1,0,
+			0,-1,0,
+			0,-1,0,
+
+			0,0,-1,
+			0,0,1,
+			0,0,1,
+			0,0,-1,
+			0,0,-1,
+			0,0,1,
+			0,0,1,
+			0,0,-1,
+
+			-1,0,0,
+			-1,0,0,
+			1,0,0,
+			1,0,0,
+			-1,0,0,
+			-1,0,0,
+			1,0,0,
+			1,0,0,
+
+		]
 		//The defined indices (and corresponding vertices)
 		//will be read in groups of three to draw triangles
 		this.primitiveType = this.scene.gl.TRIANGLES;
 
 		this.initGLBuffers();
+	}
+	updateBuffers(complexity){
 	}
 }
