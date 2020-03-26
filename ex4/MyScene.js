@@ -46,7 +46,8 @@ class MyScene extends CGFscene {
         //-------Objects connected to MyInterface
         this.displayAxis = true;
         this.displayQuad = false;
-        this.displayTangram = true;
+        this.displayQuadCube = true;
+        this.displayTangram = false;
         this.scaleFactor = 5;
         this.selectedTexture = -1;        
         this.wrapS = 0;
@@ -130,6 +131,10 @@ class MyScene extends CGFscene {
         if(this.displayTangram){
             this.scale(1/4,1/4,1/4);
             this.tangram.display();
+        }
+
+        if(this.displayQuadCube){
+            this.quadCube.display();
         }
         
         // ---- END Primitive drawing section
