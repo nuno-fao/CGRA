@@ -14,4 +14,3 @@ void main() {
 
     coords=gl_Position;
 }
-

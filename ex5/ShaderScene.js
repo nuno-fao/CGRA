@@ -51,13 +51,12 @@ class ShaderScene extends CGFscene {
 		this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
 		this.appearance.setShininess(120);
 
-		this.texture = new CGFtexture(this, "textures/texture.jpg");
+		this.texture = new CGFtexture(this, "textures/waterTex.jpg");
 		this.appearance.setTexture(this.texture);
 		this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
-		this.texture2 = new CGFtexture(this, "textures/FEUP.jpg");
-		this.waterTex = new CGFtexture(this, "textures/waterTex.jpg");
-		this.waterMap = new CGFtexture(this, "textures/waterMap.jpg");
+		this.texture2 = new CGFtexture(this, "textures/waterMap.jpg");
+
 
 		// shaders initialization
 
@@ -70,9 +69,10 @@ class ShaderScene extends CGFscene {
 			new CGFshader(this.gl, "shaders/texture3.vert", "shaders/texture3.frag"),
 			new CGFshader(this.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag"),
 			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/sepia.frag"),
-			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/grayscale.frag"),
 			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/convolution.frag"),
-			new CGFshader(this.gl, "shaders/yellowblue.vert", "shaders/yellowblue.frag"),
+			new CGFshader(this.gl, "shaders/ex11.vert", "shaders/ex11.frag"),
+			new CGFshader(this.gl, "shaders/ex12.vert", "shaders/ex12.frag"),
+			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/ex13.frag"),
 			new CGFshader(this.gl, "shaders/water.vert", "shaders/water.frag")
 		];
 
@@ -81,8 +81,10 @@ class ShaderScene extends CGFscene {
 		this.testShaders[5].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ timeFactor: 0 });
-		this.testShaders[11].setUniformsValues({uSampler2: 1});
-		this.testShaders[11].setUniformsValues({ timeFactor: 0 });
+		this.testShaders[10].setUniformsValues({ uSampler2: 1 });
+		this.testShaders[10].setUniformsValues({ timeFactor: 0 });
+		this.testShaders[12].setUniformsValues({ uSampler2: 1 });
+		this.testShaders[12].setUniformsValues({ timeFactor: 0 });
 
 
 		// Shaders interface variables
@@ -96,10 +98,11 @@ class ShaderScene extends CGFscene {
 			'Multiple textures in VS and FS': 5,
 			'Animation example': 6,
 			'Sepia': 7,
-			'Grayscale': 8,
-			'Convolution': 9,
-			'Yellow-Blue': 10,
-			'Water': 11
+			'Convolution': 8,
+			'YellowBlue 1.1': 9,
+			'YellowBlue 1.2': 10,
+			'Grayscale': 11,
+			'Water': 12
 		};
 
 		// shader code panels references
@@ -182,9 +185,10 @@ class ShaderScene extends CGFscene {
 		// only shader 6 is using time factor
 		if (this.selectedExampleShader == 6)
 			this.testShaders[6].setUniformsValues({ timeFactor: t / 100 % 1000 });
-		if(this.selectedExampleShader == 11){
-			this.testShaders[11].setUniformsValues({ timeFactor: t / 100 % 1000 });	
-		}
+		else if (this.selectedExampleShader == 10)
+			this.testShaders[10].setUniformsValues({ timeFactor: t / 100 % 1000 });
+	    else if (this.selectedExampleShader == 12)
+			this.testShaders[12].setUniformsValues({ timeFactor: t / 100 % 1000 });
 	}
 
 	// main display function
@@ -215,15 +219,7 @@ class ShaderScene extends CGFscene {
 		this.pushMatrix();
 
 		// bind additional texture to texture unit 1
-		if(this.selectedExampleShader==11){
-			this.appearance.setTexture(this.waterTex);
-			this.waterMap.bind(1);
-		}
-		else{
-			this.appearance.setTexture(this.texture);
-			this.texture2.bind(1);
-		}
-		//
+		this.texture2.bind(1);
 
 		if (this.selectedObject==0) {
 			// teapot (scaled and rotated to conform to our axis)
