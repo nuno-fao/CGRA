@@ -23,24 +23,51 @@ class MyScene extends CGFscene {
         
         this.enableTextures(true);
 
+        //Applied Materials
+        this.cubemapMaterial1 = new CGFappearance(this);
+        this.cubemapMaterial1.setAmbient(1, 1, 1, 1);
+        this.cubemapMaterial1.setDiffuse(0.0, 0.0, 0.0, 1);
+        this.cubemapMaterial1.setSpecular(0.0, 0.0, 0.0, 1);
+        this.cubemapMaterial1.setShininess(10.0);
+        this.cubemapMaterial1.loadTexture('images/cubemap.png');
+
+        this.cubemapMaterial2 = new CGFappearance(this);
+        this.cubemapMaterial2.setAmbient(1, 1, 1, 1);
+        this.cubemapMaterial2.setDiffuse(0.0, 0.0, 0.0, 1);
+        this.cubemapMaterial2.setSpecular(0.0, 0.0, 0.0, 1);
+        this.cubemapMaterial2.setShininess(10.0);
+        this.cubemapMaterial2.loadTexture('images/nightsky.png');
+
+        this.cubeMaps = [this.cubemapMaterial1, this.cubemapMaterial2];
+        this.cubeMapIDs={
+            'Clear Sky': 0,
+            'Night Sky': 1
+        }
+        //-----
+
         this.slices = 6;
         this.stacks = 8;
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.incompleteSphere = new MySphere(this, this.slices, this.stacks);
         this.cylinder = new MyCylinder(this, this.slices);
-        this.objects = [this.incompleteSphere, this.cylinder];
+        this.vehicle = new MyVehicle(this, this.slices, this.stacks);
+        this.cubeMap = new MyCubeMap(this);
+        this.objects = [this.incompleteSphere, this.cylinder, this.vehicle];
 
         this.objectIDs = {
             'Sphere': 0 , 
-            'Cylinder': 1
+            'Cylinder': 1,
+            'Vehicle': 2
         };
 
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.displayObject = true;
+        this.displayCubeMap = true;
         this.displayNormals = false;
         this.selectedObject = 0;
+        this.selectedCubeMap = 0;
         this.scaleFactor = 1.0;
     }
 
@@ -71,6 +98,10 @@ class MyScene extends CGFscene {
         this.objects[this.selectedObject];
     }
 
+    updateCubeMap() {
+        this.cubeMaps[this.selectedCubeMap];
+    }
+
     display() {
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
@@ -99,6 +130,12 @@ class MyScene extends CGFscene {
         if (this.displayObject) {
             this.objects[this.selectedObject].display();
         }
+
+        if(this.displayCubeMap){
+            this.cubeMap.display();
+        }
+
+
 
         //This sphere does not have defined texture coordinates
         //this.incompleteSphere.display();
