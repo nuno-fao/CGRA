@@ -62,7 +62,7 @@ class MyCubeMap extends CGFobject {
     }
 
     display() {
-        this.scene.scale(50*this.scene.scaleFactor, 50*this.scene.scaleFactor, 50*this.scene.scaleFactor);
+        this.scene.scale(50, 50, 50);
 
         this.top.apply();
         this.scene.pushMatrix();
@@ -79,7 +79,7 @@ class MyCubeMap extends CGFobject {
         this.quad.display();
         this.scene.popMatrix();
 
-        this.left.apply()
+        this.left.apply();
         this.scene.pushMatrix();
         this.scene.translate(-0.5,0,0);
         this.scene.rotate(Math.PI/2,0,1,0);
@@ -124,6 +124,24 @@ class MyCubeMap extends CGFobject {
             this.front.loadTexture('images/split_forest/front.png');
             this.top.loadTexture('images/split_forest/top.png');
             this.bottom.loadTexture('images/split_forest/bottom.png');
+        }
+
+        else if (this.scene.selectedTexture == 2) {
+            this.left.loadTexture('images/split_sunset/left.png');
+            this.right.loadTexture('images/split_sunset/right.png');
+            this.back.loadTexture('images/split_sunset/back.png');
+            this.front.loadTexture('images/split_sunset/front.png');
+            this.top.loadTexture('images/split_sunset/top.png');
+            this.bottom.loadTexture('images/split_sunset/bottom.png');
+        }
+        
+        else if (this.scene.selectedTexture == 3) {
+            this.left.loadTexture('images/split_stars/left.png');
+            this.right.loadTexture('images/split_stars/right.png');
+            this.back.loadTexture('images/split_stars/back.png');
+            this.front.loadTexture('images/split_stars/front.png');
+            this.top.loadTexture('images/split_stars/top.png');
+            this.bottom.loadTexture('images/split_stars/bottom.png');
         }
     }
 }

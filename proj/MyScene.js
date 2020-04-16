@@ -25,9 +25,9 @@ class MyScene extends CGFscene {
 
         //Applied Materials
         this.material=new CGFappearance(this);
-        this.material.setAmbient(0.9, 0.9, 0.9, 1);
-        this.material.setDiffuse(0.2, 0.2, 0.2, 1);
-        this.material.setDiffuse(0.2, 0.2, 0.2, 1);
+        this.material.setAmbient(1, 1, 1, 1.0);
+        this.material.setDiffuse(1, 1, 1, 1.0);
+        this.material.setDiffuse(1, 1, 1, 1.0);
         this.material.setShininess(10);
         this.material.loadTexture('images/earth.jpg');
         this.material.setTextureWrap('REPEAT','REPEAT');
@@ -35,7 +35,9 @@ class MyScene extends CGFscene {
         //TextureIDs
         this.textureIDs = {
             'Cube Map': 0,
-            'Forest': 1
+            'Forest': 1,
+            'Sunset': 2,
+            'Stars': 3
         }
         //-----
 
@@ -63,6 +65,7 @@ class MyScene extends CGFscene {
         this.selectedObject = 0;
         this.selectedTexture = 0;
         this.scaleFactor = 1.0;
+        this.speedFactor = 1.0;
     }
 
     initLights() {
@@ -83,9 +86,46 @@ class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
+    checkKeys() {
+        var text = "Keys pressed: ";
+        var keysPressed = false;
+
+        // Check for key codes e.g. in https://keycode.info/
+        if(this.gui.isKeyPressed("KeyW")){
+            text += " W ";
+            this.objects[2].accelerate(0.5*this.speedFactor);
+            keysPressed = true;
+        }
+        if(this.gui.isKeyPressed("KeyS")){
+            text += " S ";
+            this.objects[2].accelerate(-0.5*this.speedFactor);
+            keysPressed = true;
+        }
+        if(this.gui.isKeyPressed("KeyA")){
+            text += " A ";
+            this.objects[2].turn(10);
+            keysPressed = true;
+        }
+        if(this.gui.isKeyPressed("KeyD")){
+            text += " D ";
+            this.objects[2].turn(-10);
+            keysPressed = true;
+        }
+        if (this.gui.isKeyPressed("KeyR")) {
+            text += " R "
+            this.objects[2].reset();
+            keysPressed = true;
+        }
+
+        if(keysPressed){
+            this.objects[2].update();
+            console.log(text);
+        }
+    }
+   
     // called periodically (as per setUpdatePeriod() in init())
     update(t) {
-        //To be done...
+        this.checkKeys();
     }
 
     updateObject() {
@@ -114,7 +154,8 @@ class MyScene extends CGFscene {
         this.setDefaultAppearance();
 
         // ---- BEGIN Primitive drawing section
-        this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
+        this.pushMatrix();
+
 
         if (this.displayNormals)
             this.objects[this.selectedObject].enableNormalViz();
@@ -131,6 +172,7 @@ class MyScene extends CGFscene {
             this.cubeMap.display();
         }
 
+        this.popMatrix();
         // ---- END Primitive drawing section
     }
 }
