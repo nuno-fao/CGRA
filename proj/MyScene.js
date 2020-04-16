@@ -24,28 +24,22 @@ class MyScene extends CGFscene {
         this.enableTextures(true);
 
         //Applied Materials
-        this.cubemapMaterial1 = new CGFappearance(this);
-        this.cubemapMaterial1.setAmbient(1, 1, 1, 1);
-        this.cubemapMaterial1.setDiffuse(0.0, 0.0, 0.0, 1);
-        this.cubemapMaterial1.setSpecular(0.0, 0.0, 0.0, 1);
-        this.cubemapMaterial1.setShininess(10.0);
-        this.cubemapMaterial1.loadTexture('images/cubemap.png');
-
-        this.cubemapMaterial2 = new CGFappearance(this);
-        this.cubemapMaterial2.setAmbient(1, 1, 1, 1);
-        this.cubemapMaterial2.setDiffuse(0.0, 0.0, 0.0, 1);
-        this.cubemapMaterial2.setSpecular(0.0, 0.0, 0.0, 1);
-        this.cubemapMaterial2.setShininess(10.0);
-        this.cubemapMaterial2.loadTexture('images/nightsky.png');
-
-        this.cubeMaps = [this.cubemapMaterial1, this.cubemapMaterial2];
-        this.cubeMapIDs={
-            'Clear Sky': 0,
-            'Night Sky': 1
+        this.material=new CGFappearance(this);
+        this.material.setAmbient(0.9, 0.9, 0.9, 1);
+        this.material.setDiffuse(0.2, 0.2, 0.2, 1);
+        this.material.setDiffuse(0.2, 0.2, 0.2, 1);
+        this.material.setShininess(10);
+        this.material.loadTexture('images/earth.jpg');
+        this.material.setTextureWrap('REPEAT','REPEAT');
+        
+        //TextureIDs
+        this.textureIDs = {
+            'Cube Map': 0,
+            'Forest': 1
         }
         //-----
 
-        this.slices = 6;
+        this.slices = 16;
         this.stacks = 8;
         //Initialize scene objects
         this.axis = new CGFaxis(this);
@@ -67,7 +61,7 @@ class MyScene extends CGFscene {
         this.displayCubeMap = true;
         this.displayNormals = false;
         this.selectedObject = 0;
-        this.selectedCubeMap = 0;
+        this.selectedTexture = 0;
         this.scaleFactor = 1.0;
     }
 
@@ -98,8 +92,8 @@ class MyScene extends CGFscene {
         this.objects[this.selectedObject];
     }
 
-    updateCubeMap() {
-        this.cubeMaps[this.selectedCubeMap];
+    updateTexture() {
+        this.cubeMap.updateTexture();
     }
 
     display() {
@@ -128,17 +122,14 @@ class MyScene extends CGFscene {
             this.objects[this.selectedObject].disableNormalViz();
         
         if (this.displayObject) {
+            this.pushMatrix();
             this.objects[this.selectedObject].display();
+            this.popMatrix();
         }
 
-        if(this.displayCubeMap){
+        if (this.displayCubeMap) {
             this.cubeMap.display();
         }
-
-
-
-        //This sphere does not have defined texture coordinates
-        //this.incompleteSphere.display();
 
         // ---- END Primitive drawing section
     }

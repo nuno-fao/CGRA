@@ -6,124 +6,124 @@
 class MyCubeMap extends CGFobject {
 	constructor(scene) {
         super(scene);
-        
-        this.top = new MyQuad(scene);
-        this.bottom = new MyQuad(scene);
-        this.left = new MyQuad(scene);
-        this.right = new MyQuad(scene);
-        this.back = new MyQuad(scene);
-        this.front = new MyQuad(scene);
+        this.quad = new MyQuad(scene);
 
-        this.initMaterials();
-    }
-    
-    initMaterials(){
-
-        this.top.texCoords = [
-            0.25,1/3,
-            0.5,1/3,
-            0.25,0.01,
-            0.49,0.01
-        ];
-        this.top.updateTexCoordsGLBuffers();
-
-        this.bottom.texCoords = [
-            0.27,1,
-            0.5,1,
-            0.27,2/3,
-            0.5,2/3
-        ];
-        this.bottom.updateTexCoordsGLBuffers();
-
-        this.left.texCoords = [
-            0.0,2/3,
-            0.25,2/3,
-            0.0,0.334,
-            0.25,0.334
-        ];
-        this.left.updateTexCoordsGLBuffers();
-
-        this.right.texCoords = [
-            0.5,2/3,
-            0.75,2/3,
-            0.5,0.334,
-            0.75,0.334
-        ];
-        this.right.updateTexCoordsGLBuffers();
-
-        this.back.texCoords = [
-            0.25,2/3,
-            0.5,2/3,
-            0.25,1/3,
-            0.5,1/3
-        ];
-        this.back.updateTexCoordsGLBuffers();
-
-        this.front.texCoords = [
-            0.75,2/3,
-            0.98,2/3,
-            0.75,0.335,
-            0.98,0.335
-        ];
-        this.front.updateTexCoordsGLBuffers();
-    }
-    
-    enableNormalViz(){
-        this.top.enableNormalViz();
-        this.bottom.enableNormalViz();
-        this.left.enableNormalViz();
-        this.right.enableNormalViz();
-        this.bottom.enableNormalViz();
-        this.front.enableNormalViz();
+        this.initTextures(this.scene);
     }
 
-    disableNormalViz(){
-        this.top.disableNormalViz();
-        this.bottom.disableNormalViz();
-        this.left.disableNormalViz();
-        this.right.disableNormalViz();
-        this.bottom.disableNormalViz();
-        this.front.disableNormalViz();
+    initTextures(scene) {
+        this.front = new CGFappearance(scene);
+        this.front.setAmbient(1, 1, 1, 1.0);
+        this.front.setDiffuse(0, 0, 0, 1.0);
+        this.front.setSpecular(0, 0, 0, 1.0);
+        this.front.setShininess(10.0);
+        this.front.loadTexture('images/split_cubemap/front.png');
+        this.front.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.back = new CGFappearance(scene);
+        this.back.setAmbient(1, 1, 1, 1.0);
+        this.back.setDiffuse(0, 0, 0, 1.0);
+        this.back.setSpecular(0, 0, 0, 1.0);
+        this.back.setShininess(10.0);
+        this.back.loadTexture('images/split_cubemap/back.png');
+        this.back.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.left = new CGFappearance(scene);
+        this.left.setAmbient(1, 1, 1, 1.0);
+        this.left.setDiffuse(0, 0, 0, 1.0);
+        this.left.setSpecular(0, 0, 0, 1.0);
+        this.left.setShininess(10.0);
+        this.left.loadTexture('images/split_cubemap/right.png');
+        this.left.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.right = new CGFappearance(scene);
+        this.right.setAmbient(1, 1, 1, 1.0);
+        this.right.setDiffuse(0, 0, 0, 1.0);
+        this.right.setSpecular(0, 0, 0, 1.0);
+        this.right.setShininess(10.0);
+        this.right.loadTexture('images/split_cubemap/left.png');
+        this.right.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.top = new CGFappearance(scene);
+        this.top.setAmbient(1, 1, 1, 1.0);
+        this.top.setDiffuse(0, 0, 0, 1.0);
+        this.top.setSpecular(0, 0, 0, 1.0);
+        this.top.setShininess(10.0);
+        this.top.loadTexture('images/split_cubemap/top.png');
+        this.top.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.bottom = new CGFappearance(scene);
+        this.bottom.setAmbient(1, 1, 1, 1.0);
+        this.bottom.setDiffuse(0, 0, 0, 1.0);
+        this.bottom.setSpecular(0, 0, 0, 1.0);
+        this.bottom.setShininess(10.0);
+        this.bottom.loadTexture('images/split_cubemap/bottom.png');
+        this.bottom.setTextureWrap('REPEAT', 'REPEAT');
     }
 
-    display(){
+    display() {
+        this.scene.scale(50*this.scene.scaleFactor, 50*this.scene.scaleFactor, 50*this.scene.scaleFactor);
 
-        this.scene.scale(50*this.scene.scaleFactor,50*this.scene.scaleFactor,50*this.scene.scaleFactor);
-        this.scene.cubeMaps[this.scene.selectedCubeMap].apply();
-
+        this.top.apply();
         this.scene.pushMatrix();
         this.scene.translate(0,0.5,0);
+        this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.rotate(Math.PI/2,1,0,0);
-        this.top.display();
+        this.quad.display();
         this.scene.popMatrix();
 
+        this.bottom.apply();
         this.scene.pushMatrix();
         this.scene.translate(0,-0.5,0);
         this.scene.rotate(-Math.PI/2,1,0,0);
-        this.bottom.display();
+        this.quad.display();
         this.scene.popMatrix();
 
+        this.left.apply()
         this.scene.pushMatrix();
         this.scene.translate(-0.5,0,0);
         this.scene.rotate(Math.PI/2,0,1,0);
-        this.left.display();
+        this.quad.display();
         this.scene.popMatrix();
 
+        this.right.apply();
         this.scene.pushMatrix();
         this.scene.translate(0.5,0,0);
         this.scene.rotate(-Math.PI/2,0,1,0);
-        this.right.display();
+        this.quad.display();
         this.scene.popMatrix();
 
+        this.back.apply();
         this.scene.pushMatrix();
         this.scene.translate(0,0,-0.5);
-        this.back.display();
+        this.quad.display();
         this.scene.popMatrix();
 
+        this.front.apply();
         this.scene.pushMatrix();
         this.scene.translate(0,0,0.5);
         this.scene.rotate(Math.PI,0,1,0);
-        this.front.display();
+        this.quad.display();
         this.scene.popMatrix();
+    }
+
+    updateTexture() {
+        if (this.scene.selectedTexture == 0) {
+            this.right.loadTexture('images/split_cubemap/left.png');
+            this.left.loadTexture('images/split_cubemap/right.png');
+            this.front.loadTexture('images/split_cubemap/front.png');
+            this.back.loadTexture('images/split_cubemap/back.png');
+            this.top.loadTexture('images/split_cubemap/top.png');
+            this.bottom.loadTexture('images/split_cubemap/bottom.png');
+        }
+
+        else if (this.scene.selectedTexture == 1) {
+            this.left.loadTexture('images/split_forest/left.png');
+            this.right.loadTexture('images/split_forest/right.png');
+            this.back.loadTexture('images/split_forest/back.png');
+            this.front.loadTexture('images/split_forest/front.png');
+            this.top.loadTexture('images/split_forest/top.png');
+            this.bottom.loadTexture('images/split_forest/bottom.png');
+        }
     }
 }
