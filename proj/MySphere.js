@@ -86,7 +86,9 @@ class MySphere extends CGFobject {
 	}
 
 	display() {
-		this.scene.material.apply();
+		if (this.scene.selectedObject == 1)
+		    this.scene.material.apply();
+		else this.scene.defaultMaterial.apply();
 		super.display();
 	}
 }

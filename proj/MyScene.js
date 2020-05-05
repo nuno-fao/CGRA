@@ -31,13 +31,18 @@ class MyScene extends CGFscene {
         this.material.setShininess(10);
         this.material.loadTexture('images/earth.jpg');
         this.material.setTextureWrap('REPEAT','REPEAT');
+
+        this.defaultMaterial = new CGFappearance(this);
+        this.defaultMaterial.setAmbient(0.2, 0.4, 0.8, 1.0);
+        this.defaultMaterial.setDiffuse(0.2, 0.4, 0.8, 1.0);
+        this.defaultMaterial.setSpecular(0.2, 0.4, 0.8, 1.0);
+        this.defaultMaterial.setShininess(10.0);
         
         //TextureIDs
         this.textureIDs = {
             'Cube Map': 0,
             'Forest': 1,
-            'Sunset': 2,
-            'Stars': 3
+            'Sunset': 2
         }
         //-----
 
@@ -49,12 +54,12 @@ class MyScene extends CGFscene {
         this.cylinder = new MyCylinder(this, this.slices);
         this.vehicle = new MyVehicle(this, this.slices, this.stacks);
         this.cubeMap = new MyCubeMap(this);
-        this.objects = [this.incompleteSphere, this.cylinder, this.vehicle];
-
+        this.terrain = new MyTerrain(this);
+        this.objects = [this.vehicle, this.incompleteSphere, this.cylinder];
         this.objectIDs = {
-            'Sphere': 0 , 
-            'Cylinder': 1,
-            'Vehicle': 2
+            'Vehicle': 0,
+            'Sphere': 1, 
+            'Cylinder': 2
         };
 
         //Objects connected to MyInterface
@@ -69,6 +74,8 @@ class MyScene extends CGFscene {
     }
 
     initLights() {
+        this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
+
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
         this.lights[0].enable();
@@ -76,7 +83,7 @@ class MyScene extends CGFscene {
     }
 
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(35, 35, 35), vec3.fromValues(0, 0, 0));
     }
 
     setDefaultAppearance() {
@@ -86,46 +93,58 @@ class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
-    checkKeys() {
+    checkKeys(t) {
         var text = "Keys pressed: ";
         var keysPressed = false;
+        var APressed = false;
+        var DPressed = false;
 
         // Check for key codes e.g. in https://keycode.info/
         if(this.gui.isKeyPressed("KeyW")){
             text += " W ";
-            this.objects[2].accelerate(0.5*this.speedFactor);
+            this.objects[0].accelerate(0.1*this.speedFactor);
             keysPressed = true;
         }
         if(this.gui.isKeyPressed("KeyS")){
             text += " S ";
-            this.objects[2].accelerate(-0.5*this.speedFactor);
+            this.objects[0].accelerate(-0.1*this.speedFactor);
             keysPressed = true;
         }
         if(this.gui.isKeyPressed("KeyA")){
             text += " A ";
-            this.objects[2].turn(10);
+            this.objects[0].turn(5);
             keysPressed = true;
+            APressed = true;
         }
         if(this.gui.isKeyPressed("KeyD")){
             text += " D ";
-            this.objects[2].turn(-10);
+            this.objects[0].turn(-5);
             keysPressed = true;
+            DPressed = true;
         }
         if (this.gui.isKeyPressed("KeyR")) {
             text += " R "
-            this.objects[2].reset();
+            this.objects[0].reset();
             keysPressed = true;
         }
-
+        if (this.gui.isKeyPressed("KeyP")){
+            text += " P ";
+            this.objects[0].setAutoPilot();
+            keysPressed = true;
+        }
+        
+        this.objects[0].update(t);
         if(keysPressed){
-            this.objects[2].update();
+            if (DPressed) this.vehicle.finAng = 10;
+            else if (APressed) this.vehicle.finAng = -10;
             console.log(text);
         }
     }
    
     // called periodically (as per setUpdatePeriod() in init())
     update(t) {
-        this.checkKeys();
+        if (this.selectedObject == 0)
+            this.checkKeys(t);
     }
 
     updateObject() {
@@ -156,12 +175,13 @@ class MyScene extends CGFscene {
         // ---- BEGIN Primitive drawing section
         this.pushMatrix();
 
+        this.terrain.display();
 
         if (this.displayNormals)
             this.objects[this.selectedObject].enableNormalViz();
         else
             this.objects[this.selectedObject].disableNormalViz();
-        
+
         if (this.displayObject) {
             this.pushMatrix();
             this.objects[this.selectedObject].display();
@@ -171,7 +191,7 @@ class MyScene extends CGFscene {
         if (this.displayCubeMap) {
             this.cubeMap.display();
         }
-
+        
         this.popMatrix();
         // ---- END Primitive drawing section
     }

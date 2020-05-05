@@ -66,43 +66,43 @@ class MyCubeMap extends CGFobject {
 
         this.top.apply();
         this.scene.pushMatrix();
-        this.scene.translate(0,0.5,0);
+        this.scene.translate(0, 0.5, 0);
         this.scene.rotate(Math.PI, 0, 1, 0);
-        this.scene.rotate(Math.PI/2,1,0,0);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.quad.display();
         this.scene.popMatrix();
 
         this.bottom.apply();
         this.scene.pushMatrix();
-        this.scene.translate(0,-0.5,0);
-        this.scene.rotate(-Math.PI/2,1,0,0);
+        this.scene.translate(0, -0.5, 0);
+        this.scene.rotate(-Math.PI/2, 1, 0, 0);
         this.quad.display();
         this.scene.popMatrix();
 
         this.left.apply();
         this.scene.pushMatrix();
-        this.scene.translate(-0.5,0,0);
-        this.scene.rotate(Math.PI/2,0,1,0);
+        this.scene.translate(-0.5, 0, 0);
+        this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.quad.display();
         this.scene.popMatrix();
 
         this.right.apply();
         this.scene.pushMatrix();
-        this.scene.translate(0.5,0,0);
-        this.scene.rotate(-Math.PI/2,0,1,0);
+        this.scene.translate(0.5, 0, 0);
+        this.scene.rotate(-Math.PI/2, 0, 1, 0);
         this.quad.display();
         this.scene.popMatrix();
 
         this.back.apply();
         this.scene.pushMatrix();
-        this.scene.translate(0,0,-0.5);
+        this.scene.translate(0, 0, -0.5);
         this.quad.display();
         this.scene.popMatrix();
 
         this.front.apply();
         this.scene.pushMatrix();
-        this.scene.translate(0,0,0.5);
-        this.scene.rotate(Math.PI,0,1,0);
+        this.scene.translate(0, 0, 0.5);
+        this.scene.rotate(Math.PI, 0, 1, 0);
         this.quad.display();
         this.scene.popMatrix();
     }
@@ -133,15 +133,6 @@ class MyCubeMap extends CGFobject {
             this.front.loadTexture('images/split_sunset/front.png');
             this.top.loadTexture('images/split_sunset/top.png');
             this.bottom.loadTexture('images/split_sunset/bottom.png');
-        }
-        
-        else if (this.scene.selectedTexture == 3) {
-            this.left.loadTexture('images/split_stars/left.png');
-            this.right.loadTexture('images/split_stars/right.png');
-            this.back.loadTexture('images/split_stars/back.png');
-            this.front.loadTexture('images/split_stars/front.png');
-            this.top.loadTexture('images/split_stars/top.png');
-            this.bottom.loadTexture('images/split_stars/bottom.png');
         }
     }
 }

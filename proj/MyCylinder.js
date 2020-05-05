@@ -29,9 +29,10 @@ class MyCylinder extends CGFobject {
         var ang = 0;
         var alpha = 2*Math.PI/this.slices;
         var map = 0;
-        var sides = 1/this.slices;
+        
 
         for (var i = 0; i <= this.slices; i++) {
+            var sides = i/this.slices;
             var xAng = Math.cos(ang);
             var yAng = Math.sin(ang);
 
@@ -55,4 +56,10 @@ class MyCylinder extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+    
+    display() {
+        this.scene.defaultMaterial.apply();
+        super.display();
+    }
+    
 }
