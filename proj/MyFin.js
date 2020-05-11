@@ -14,8 +14,6 @@ class MyFin extends CGFobject {
     }
 
     display() {
-        this.scene.defaultMaterial.apply();
-
         this.scene.pushMatrix();
 
         this.scene.translate(0, 0.5, -1);

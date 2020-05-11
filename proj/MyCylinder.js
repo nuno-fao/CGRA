@@ -58,8 +58,10 @@ class MyCylinder extends CGFobject {
     }
     
     display() {
-        this.scene.defaultMaterial.apply();
+        if (this.scene.selectedObject == 2)
+		    this.scene.defaultMaterial.apply();
         super.display();
+        this.scene.defaultMaterial.apply();
     }
     
 }

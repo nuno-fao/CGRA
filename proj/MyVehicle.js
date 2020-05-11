@@ -16,7 +16,6 @@ class MyVehicle extends CGFobject {
         this.autoPilot = false;
         this.autoPilotAng = 0;
         this.time = 0;
-        this.elapsedTime = 0;
         this.xCenter = 0;
         this.zCenter = 0;
         this.radius = 5;
@@ -26,7 +25,42 @@ class MyVehicle extends CGFobject {
         this.fin = new MyFin(this.scene);
         this.propeller = new MyPropeller(this.scene);
 
+        this.flag = new MyPlane(this.scene, 40, true);
+        this.flagShader = new CGFshader(this.scene.gl, "shaders/flag.vert", "shaders/flag.frag");
+        this.flagTexture = new CGFtexture(this.scene, "images/flag.jpg");
+
+        this.flagShader.setUniformsValues({uSampler: 0});
+        this.flagShader.setUniformsValues({speed: 0});
+        this.flagShader.setUniformsValues({time: 0});
+
         this.initBuffers();
+        this.initMaterials(scene);
+    }
+
+    initMaterials(scene) {
+        this.blimpMaterial = new CGFappearance(scene);
+        this.blimpMaterial.setAmbient(1, 1, 1, 1.0);
+        this.blimpMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.blimpMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.blimpMaterial.setShininess(10);
+        this.blimpMaterial.loadTexture('images/comuna.png');
+        this.blimpMaterial.setTextureWrap('REPEAT','REPEAT');
+
+        this.finMaterial = new CGFappearance(scene);
+        this.finMaterial.setAmbient(1, 1, 1, 1.0);
+        this.finMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.finMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.finMaterial.setShininess(10);
+        this.finMaterial.loadTexture('images/pepega.jpg');
+        this.finMaterial.setTextureWrap('REPEAT','REPEAT');
+
+        this.cockpitMaterial = new CGFappearance(scene);
+        this.cockpitMaterial.setAmbient(1, 1, 1, 1.0);
+        this.cockpitMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.cockpitMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.cockpitMaterial.setShininess(10);
+        this.cockpitMaterial.loadTexture('images/yellow.png');
+        this.cockpitMaterial.setTextureWrap('REPEAT','REPEAT');
     }
 
     initBuffers() {
@@ -109,9 +143,9 @@ class MyVehicle extends CGFobject {
             if (this.time == 0)
                 this.time = t;
 
-            this.elapsedTime = t - this.time;
-            this.autoPilotAng -= 2*Math.PI * this.elapsedTime / 5000;
+            var elapsedTime = t - this.time;
             this.time = t;
+            this.autoPilotAng -= 2*Math.PI * elapsedTime / 5000;
         }
 
         else {
@@ -124,7 +158,11 @@ class MyVehicle extends CGFobject {
 
         if (Math.round(this.autoPilotAng * 10) / 10 == -Math.round(2*Math.PI * 10) / 10){
             this.autoPilot = false;
+            this.time = 0;
+            this.autoPilotAng = 0;
         }
+
+        //falta flagShader.setUniformsValues() para time e speed;
     }
 
     reset() {
@@ -136,11 +174,9 @@ class MyVehicle extends CGFobject {
         this.finAng = 0;
         this.autoPilot = false;
         this.time = 0;
-        this.elapsedTime = 0;
     }
     
     display() {
-
         this.scene.pushMatrix();
 
         if (this.autoPilot){
@@ -149,32 +185,36 @@ class MyVehicle extends CGFobject {
             this.scene.translate(-this.xCenter, 0, -this.zCenter);
         }
 
-        this.scene.translate(this.x, 10, this.z);
+        this.scene.translate(this.x, 8, this.z);
         this.scene.scale(this.scene.scaleFactor,this.scene.scaleFactor,this.scene.scaleFactor);
         this.scene.rotate(this.angY * Math.PI/180, 0, 1, 0);
 
         //balloon
         this.scene.pushMatrix();
+        this.blimpMaterial.apply();
         this.scene.scale(0.5, 0.5, 1);
         this.sphere.display();
         this.scene.popMatrix();
 
         //cockpit cylinder
         this.scene.pushMatrix();
+        this.cockpitMaterial.apply();
         this.scene.translate(0, -0.5, -0.4);
         this.scene.scale(0.1, 0.1, 0.6);
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.cylinder.display();
         this.scene.popMatrix();
 
-        //cockipit spheres
+        //cockpit spheres
         this.scene.pushMatrix();
+        this.blimpMaterial.apply();
         this.scene.translate(0, -0.5, -0.4);
         this.scene.scale(0.1, 0.1, 0.1);
         this.sphere.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
+        this.blimpMaterial.apply();
         this.scene.translate(0, -0.5, 0.2);
         this.scene.scale(0.1, 0.1, 0.1);
         this.sphere.display();
@@ -186,7 +226,6 @@ class MyVehicle extends CGFobject {
         this.scene.scale(0.075, 0.05, 0.11);
         this.sphere.display();
         this.scene.popMatrix();
-
         this.scene.pushMatrix();
         this.scene.translate(0.11, -0.51, -0.5);
         this.scene.scale(0.2, 0.16, 0.2);
@@ -206,8 +245,10 @@ class MyVehicle extends CGFobject {
         this.scene.popMatrix();
 
         //fins
-
         //vertical fins
+        this.scene.pushMatrix();
+
+        this.finMaterial.apply();
         if (this.autoPilot)
             this.finAng = 10;
         
@@ -244,7 +285,19 @@ class MyVehicle extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.popMatrix();
+        this.scene.popMatrix();
 
+        //Flag
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, -1.75);
+        this.scene.rotate(Math.PI/2, 0, 1, 0);
+        this.scene.scale(1, 0.7, 1);
+        this.scene.setActiveShader(this.flagShader);
+        this.flagTexture.bind(0);
+        this.flag.display();
+        this.scene.popMatrix();
+        
+        this.scene.setActiveShader(this.scene.defaultShader);
         this.scene.popMatrix();
     }
 

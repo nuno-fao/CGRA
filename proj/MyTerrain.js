@@ -38,8 +38,8 @@ class MyTerrain extends CGFobject {
     
     
     display() {
-
         this.scene.pushMatrix();
+        
         this.textureMap.bind(1);
         this.scene.setActiveShader(this.shader);
         this.appearance.apply();

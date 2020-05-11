@@ -24,13 +24,13 @@ class MyScene extends CGFscene {
         this.enableTextures(true);
 
         //Applied Materials
-        this.material=new CGFappearance(this);
-        this.material.setAmbient(1, 1, 1, 1.0);
-        this.material.setDiffuse(1, 1, 1, 1.0);
-        this.material.setDiffuse(1, 1, 1, 1.0);
-        this.material.setShininess(10);
-        this.material.loadTexture('images/earth.jpg');
-        this.material.setTextureWrap('REPEAT','REPEAT');
+        this.earthMaterial = new CGFappearance(this);
+        this.earthMaterial.setAmbient(1, 1, 1, 1.0);
+        this.earthMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.earthMaterial.setDiffuse(1, 1, 1, 1.0);
+        this.earthMaterial.setShininess(10);
+        this.earthMaterial.loadTexture('images/earth.jpg');
+        this.earthMaterial.setTextureWrap('REPEAT','REPEAT');
 
         this.defaultMaterial = new CGFappearance(this);
         this.defaultMaterial.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -62,11 +62,23 @@ class MyScene extends CGFscene {
             'Cylinder': 2
         };
 
+        this.supplies = [
+            new MySupply(this),
+            new MySupply(this),
+            new MySupply(this),
+            new MySupply(this),
+            new MySupply(this),
+        ];
+        this.currentSupply = 0;
+        this.billboard = new MyBillboard(this);
+        
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.displayObject = true;
         this.displayCubeMap = true;
+        this.displayTerrain = true;
         this.displayNormals = false;
+        this.displayBillboard = true;
         this.selectedObject = 0;
         this.selectedTexture = 0;
         this.scaleFactor = 1.0;
@@ -98,42 +110,64 @@ class MyScene extends CGFscene {
         var keysPressed = false;
         var APressed = false;
         var DPressed = false;
-
         // Check for key codes e.g. in https://keycode.info/
-        if(this.gui.isKeyPressed("KeyW")){
-            text += " W ";
-            this.objects[0].accelerate(0.1*this.speedFactor);
-            keysPressed = true;
+
+        if (!this.vehicle.autoPilot) {
+            if(this.gui.isKeyPressed("KeyW")){
+                text += " W ";
+                this.objects[0].accelerate(0.1*this.speedFactor);
+                keysPressed = true;
+            }
+            if(this.gui.isKeyPressed("KeyS")){
+                text += " S ";
+                this.objects[0].accelerate(-0.1*this.speedFactor);
+                keysPressed = true;
+            }
+            if(this.gui.isKeyPressed("KeyA")){
+                text += " A ";
+                this.objects[0].turn(5);
+                keysPressed = true;
+                APressed = true;
+            }
+            if(this.gui.isKeyPressed("KeyD")){
+                text += " D ";
+                this.objects[0].turn(-5);
+                keysPressed = true;
+                DPressed = true;
+            }
+
+            if (this.gui.isKeyPressed("KeyP")){
+                text += " P ";
+                this.objects[0].setAutoPilot();
+                keysPressed = true;
+            }
+
+            if (this.gui.isKeyPressed("KeyL")) {
+                text += " L ";
+                if (this.currentSupply < 5){
+                    this.supplies[this.currentSupply].drop(this.vehicle.x, this.vehicle.z);
+                    this.supplies[this.currentSupply].display();
+                    this.currentSupply++;
+                }
+                keysPressed = true;
+            }
         }
-        if(this.gui.isKeyPressed("KeyS")){
-            text += " S ";
-            this.objects[0].accelerate(-0.1*this.speedFactor);
-            keysPressed = true;
-        }
-        if(this.gui.isKeyPressed("KeyA")){
-            text += " A ";
-            this.objects[0].turn(5);
-            keysPressed = true;
-            APressed = true;
-        }
-        if(this.gui.isKeyPressed("KeyD")){
-            text += " D ";
-            this.objects[0].turn(-5);
-            keysPressed = true;
-            DPressed = true;
-        }
+
         if (this.gui.isKeyPressed("KeyR")) {
             text += " R "
             this.objects[0].reset();
-            keysPressed = true;
-        }
-        if (this.gui.isKeyPressed("KeyP")){
-            text += " P ";
-            this.objects[0].setAutoPilot();
+            this.currentSupply = 0;
+            for (var i = 0 ; i < 5; i++){
+                this.supplies[i].reset();
+            }
             keysPressed = true;
         }
         
-        this.objects[0].update(t);
+        this.vehicle.update(t);
+        for (var i = 0 ; i < 5; i++){
+                this.supplies[i].update(t);
+        }
+
         if(keysPressed){
             if (DPressed) this.vehicle.finAng = 10;
             else if (APressed) this.vehicle.finAng = -10;
@@ -175,7 +209,18 @@ class MyScene extends CGFscene {
         // ---- BEGIN Primitive drawing section
         this.pushMatrix();
 
-        this.terrain.display();
+        if (this.displayCubeMap) {
+            this.cubeMap.display();
+        }
+
+        if (this.displayTerrain) {
+            this.terrain.display();
+        }
+
+        if(this.displayBillboard) {
+            this.defaultMaterial.apply();
+            this.billboard.display();
+        }
 
         if (this.displayNormals)
             this.objects[this.selectedObject].enableNormalViz();
@@ -184,12 +229,13 @@ class MyScene extends CGFscene {
 
         if (this.displayObject) {
             this.pushMatrix();
+            this.translate(0, 2, 0);
             this.objects[this.selectedObject].display();
             this.popMatrix();
         }
 
-        if (this.displayCubeMap) {
-            this.cubeMap.display();
+        for (var i = 0; i < 5; i++){
+            this.supplies[i].display();
         }
         
         this.popMatrix();
