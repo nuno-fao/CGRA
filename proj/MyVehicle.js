@@ -29,9 +29,9 @@ class MyVehicle extends CGFobject {
         this.flagShader = new CGFshader(this.scene.gl, "shaders/flag.vert", "shaders/flag.frag");
         this.flagTexture = new CGFtexture(this.scene, "images/flag.jpg");
 
-        this.flagShader.setUniformsValues({uSampler: 0});
+        this.flagShader.setUniformsValues({uSampler2: 1});
         this.flagShader.setUniformsValues({speed: 0});
-        this.flagShader.setUniformsValues({time: 0});
+        this.flagShader.setUniformsValues({timeFactor: 0});
 
         this.initBuffers();
         this.initMaterials(scene);
@@ -163,6 +163,7 @@ class MyVehicle extends CGFobject {
         }
 
         //falta flagShader.setUniformsValues() para time e speed;
+        this.flagShader.setUniformsValues({timeFactor: t / 100 % 1000});
     }
 
     reset() {
@@ -293,7 +294,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.scene.scale(1, 0.7, 1);
         this.scene.setActiveShader(this.flagShader);
-        this.flagTexture.bind(0);
+        this.flagTexture.bind(1);
         this.flag.display();
         this.scene.popMatrix();
         

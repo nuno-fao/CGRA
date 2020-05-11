@@ -148,6 +148,7 @@ class MyScene extends CGFscene {
                     this.supplies[this.currentSupply].drop(this.vehicle.x, this.vehicle.z);
                     this.supplies[this.currentSupply].display();
                     this.currentSupply++;
+                    this.billboard.update();
                 }
                 keysPressed = true;
             }
@@ -161,6 +162,7 @@ class MyScene extends CGFscene {
                 this.supplies[i].reset();
             }
             keysPressed = true;
+            this.billboard.reset();
         }
         
         this.vehicle.update(t);
