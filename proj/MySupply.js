@@ -18,7 +18,7 @@ class MySupply extends CGFobject {
     }
     
     update(t) {
-    	if(this.state==SupplyStates.FALLING){
+    	if(this.state == SupplyStates.FALLING){
 			if (this.time == 0){
 				this.time = t;
 			}
@@ -52,8 +52,8 @@ class MySupply extends CGFobject {
     display() {
         if (this.state != SupplyStates.INACTIVE) {
             this.scene.pushMatrix();
+            
             this.scene.translate(this.x, this.y, this.z);
-
             if (this.state == SupplyStates.FALLING)
                 this.crate.display(true);
             if (this.state == SupplyStates.LANDED)

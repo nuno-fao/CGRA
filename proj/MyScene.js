@@ -79,6 +79,7 @@ class MyScene extends CGFscene {
         this.displayTerrain = true;
         this.displayNormals = false;
         this.displayBillboard = true;
+        this.LKeyUp = true;
         this.selectedObject = 0;
         this.selectedTexture = 0;
         this.scaleFactor = 1.0;
@@ -142,7 +143,7 @@ class MyScene extends CGFscene {
                 keysPressed = true;
             }
 
-            if (this.gui.isKeyPressed("KeyL")) {
+            if (this.gui.isKeyPressed("KeyL") && this.LKeyUp) {
                 text += " L ";
                 if (this.currentSupply < 5){
                     this.supplies[this.currentSupply].drop(this.vehicle.x, this.vehicle.z);
@@ -150,7 +151,12 @@ class MyScene extends CGFscene {
                     this.currentSupply++;
                     this.billboard.update();
                 }
+                this.LKeyUp = false;
                 keysPressed = true;
+            }
+
+            if(!this.gui.isKeyPressed("KeyL")){
+                this.LKeyUp=true;
             }
         }
 
@@ -219,8 +225,7 @@ class MyScene extends CGFscene {
             this.terrain.display();
         }
 
-        if(this.displayBillboard) {
-            this.defaultMaterial.apply();
+        if (this.displayBillboard) {
             this.billboard.display();
         }
 

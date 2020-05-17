@@ -89,6 +89,5 @@ class MySphere extends CGFobject {
 		if (this.scene.selectedObject == 1)
 		    this.scene.earthMaterial.apply();
 		super.display();
-		this.scene.defaultMaterial.apply();
 	}
 }

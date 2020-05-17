@@ -15,8 +15,6 @@ class MyPropeller extends CGFobject {
     }
     
     display() {
-        this.scene.defaultMaterial.apply();
-
         this.scene.pushMatrix();
         this.scene.rotate(this.angle, 0, 0, 1);
         this.scene.translate(0, 0.2, 0);

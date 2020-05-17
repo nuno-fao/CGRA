@@ -7,10 +7,10 @@
 class MyBillboard extends CGFobject {
 	constructor(scene) {
 		super(scene);
-		this.beam = new MyDoubleSQuad(this.scene);
+		this.beam = new MyQuad(this.scene);
         this.progress = new MyPlane(this.scene, 40, false);
         this.progressShader = new CGFshader(this.scene.gl,"shaders/progress.vert","shaders/progress.frag");
-        this.board = new MyPlane(this.scene, 40, false);
+        this.board = new MyPlane(this.scene, 40, true);
         this.crates = 0;
         this.initMaterials(scene);
     }
@@ -36,28 +36,28 @@ class MyBillboard extends CGFobject {
     }
 
     update() {
-        if(this.crates<5){
+        if(this.crates < 5){
             this.crates++;
         }
-        if(this.crates==1){
-            this.progressShader.setUniformsValues({total: 1.0});
+        if(this.crates == 1){
+            this.progressShader.setUniformsValues({total: 1.0 / 5.0});
         }
-        else if(this.crates==2){
-            this.progressShader.setUniformsValues({total: 2.0});
+        else if(this.crates == 2){
+            this.progressShader.setUniformsValues({total: 2.0 / 5.0});
         }
-        else if(this.crates==3){
-            this.progressShader.setUniformsValues({total: 3.0});
+        else if(this.crates == 3){
+            this.progressShader.setUniformsValues({total: 3.0 / 5.0});
         }
-        else if(this.crates==4){
-            this.progressShader.setUniformsValues({total: 4.0});
+        else if(this.crates == 4){
+            this.progressShader.setUniformsValues({total: 4.0 / 5.0});
         }
-        else if(this.crates==5){
-            this.progressShader.setUniformsValues({total: 5.0});
+        else if(this.crates == 5){
+            this.progressShader.setUniformsValues({total: 5.0 / 5.0});
         }
     }
 
     reset() {
-        this.crates=0.0;
+        this.crates = 0.0;
         this.progressShader.setUniformsValues({total: 0.0});
     }
     
