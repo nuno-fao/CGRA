@@ -3,12 +3,14 @@ include=function(){function f(){var a=this.readyState;(!a||/ded|te/.test(a))&&(c
 serialInclude=function(a){var b=console,c=serialInclude.l;if(a.length>0)c.splice(0,0,a);else b.log("Done!");if(c.length>0){if(c[0].length>1){var d=c[0].splice(0,1);b.log("Loading "+d+"...");include(d,function(){serialInclude([]);});}else{var e=c[0][0];c.splice(0,1);e.call();};}else b.log("Finished.");};serialInclude.l=new Array();
 
 serialInclude(['../lib/CGF.js','MyScene.js', 'MyInterface.js', 
-               'MySphere.js', 'MyCylinder.js', 'MyCubeMap.js',
-               'MyQuad.js', 'MyVehicle.js', 'MyFin.js',
-               'MyDoubleSQuad.js', 'MyTriangle.js', 'MyPropeller.js',
-               'MyPlane.js', 'MyTerrain.js', 'MySupply.js', 'MyCrate.js',
-               'MyBillboard.js',
-
+               './src/forms/MySphere.js', './src/forms/MyCylinder.js',
+               './src/ambient/MyCubeMap.js', './src/forms/MyQuad.js',
+               './src/vehicle/MyVehicle.js', './src/vehicle/MyFin.js', 
+               './src/forms/MyDoubleSQuad.js', './src/forms/MyTriangle.js',
+               './src/vehicle/MyPropeller.js', './src/forms/MyPlane.js', 
+               './src/ambient/MyTerrain.js', './src/vehicle/MySupply.js',
+               './src/vehicle/MyCrate.js', './src/ambient/MyBillboard.js',  
+                   
 main=function()
 {
     var app = new CGFapplication(document.body);

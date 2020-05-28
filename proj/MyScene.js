@@ -40,9 +40,8 @@ class MyScene extends CGFscene {
         
         //TextureIDs
         this.textureIDs = {
-            'Cube Map': 0,
-            'Forest': 1,
-            'Sunset': 2
+            'Desert': 0,
+            'Cube Map': 1
         }
         //-----
 
@@ -73,12 +72,14 @@ class MyScene extends CGFscene {
         this.billboard = new MyBillboard(this);
         
         //Objects connected to MyInterface
-        this.displayAxis = true;
+        this.displayAxis = false;
         this.displayObject = true;
         this.displayCubeMap = true;
         this.displayTerrain = true;
         this.displayNormals = false;
         this.displayBillboard = true;
+        this.LKeyUp = true;
+        this.PKeyUp = true;
         this.selectedObject = 0;
         this.selectedTexture = 0;
         this.scaleFactor = 1.0;
@@ -95,7 +96,7 @@ class MyScene extends CGFscene {
     }
 
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(35, 35, 35), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.5, 0.1, 500, vec3.fromValues(35, 20, 35), vec3.fromValues(0, 0, 0));
     }
 
     setDefaultAppearance() {
@@ -115,34 +116,28 @@ class MyScene extends CGFscene {
         if (!this.vehicle.autoPilot) {
             if(this.gui.isKeyPressed("KeyW")){
                 text += " W ";
-                this.objects[0].accelerate(0.1*this.speedFactor);
+                this.objects[0].accelerate(0.1 * this.speedFactor);
                 keysPressed = true;
             }
             if(this.gui.isKeyPressed("KeyS")){
                 text += " S ";
-                this.objects[0].accelerate(-0.1*this.speedFactor);
+                this.objects[0].accelerate(-0.1 * this.speedFactor);
                 keysPressed = true;
             }
             if(this.gui.isKeyPressed("KeyA")){
                 text += " A ";
-                this.objects[0].turn(5);
+                this.objects[0].turn(10);
                 keysPressed = true;
                 APressed = true;
             }
             if(this.gui.isKeyPressed("KeyD")){
                 text += " D ";
-                this.objects[0].turn(-5);
+                this.objects[0].turn(-10);
                 keysPressed = true;
                 DPressed = true;
             }
 
-            if (this.gui.isKeyPressed("KeyP")){
-                text += " P ";
-                this.objects[0].setAutoPilot();
-                keysPressed = true;
-            }
-
-            if (this.gui.isKeyPressed("KeyL")) {
+            if (this.gui.isKeyPressed("KeyL") && this.LKeyUp) {
                 text += " L ";
                 if (this.currentSupply < 5){
                     this.supplies[this.currentSupply].drop(this.vehicle.x, this.vehicle.z);
@@ -150,8 +145,24 @@ class MyScene extends CGFscene {
                     this.currentSupply++;
                     this.billboard.update();
                 }
+                this.LKeyUp = false;
                 keysPressed = true;
             }
+
+            if(!this.gui.isKeyPressed("KeyL")){
+                this.LKeyUp = true;
+            }
+        }
+
+        if (this.gui.isKeyPressed("KeyP") && this.PKeyUp) {
+            text += " P ";
+            this.objects[0].setAutoPilot();
+            this.PKeyUp = false;
+            keysPressed = true;
+        }
+
+        if(!this.gui.isKeyPressed("KeyP")){
+            this.PKeyUp = true;
         }
 
         if (this.gui.isKeyPressed("KeyR")) {
@@ -171,8 +182,8 @@ class MyScene extends CGFscene {
         }
 
         if(keysPressed){
-            if (DPressed) this.vehicle.finAng = 10;
-            else if (APressed) this.vehicle.finAng = -10;
+            if (DPressed) this.vehicle.finAng = 15;
+            else if (APressed) this.vehicle.finAng = -15;
             console.log(text);
         }
     }
@@ -219,8 +230,7 @@ class MyScene extends CGFscene {
             this.terrain.display();
         }
 
-        if(this.displayBillboard) {
-            this.defaultMaterial.apply();
+        if (this.displayBillboard) {
             this.billboard.display();
         }
 
